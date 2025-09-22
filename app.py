@@ -22,7 +22,7 @@ page_bg = """
     color: white;
 }
 .stTextInput > div > div > input {
-    color: black;
+    color: white;
 }
 .stNumberInput > div > div > input {
     color: black;
