@@ -20,16 +20,16 @@ st.set_page_config(
 )
 
 # ----------------------------
-# Custom Background (CSS)
+# Custom Styling (CSS)
 # ----------------------------
 page_bg = """
 <style>
 .stApp {
-    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Blue gradient */
-    color: white;
+    background: white;  /* White background */
+    color: black;       /* Black text */
 }
 h1, h2, h3, h4, h5, h6 {
-    color: #FFD700 !important; /* Gold headings */
+    color: #2a5298 !important; /* Navy Blue headings */
 }
 .stButton>button {
     background: linear-gradient(90deg, #FF512F, #DD2476);
@@ -40,6 +40,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .stSidebar {
     background: linear-gradient(180deg, #6a11cb, #2575fc);
+    color: white;
 }
 </style>
 """
