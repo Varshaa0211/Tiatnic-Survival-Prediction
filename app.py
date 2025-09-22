@@ -135,9 +135,12 @@ features = pd.DataFrame([{
 # ----------------------------
 # Prediction
 # ----------------------------
+# ----------------------------
+# Prediction
+# ----------------------------
 if st.button("🔮 Predict Survival"):
-    prediction = model.predict(features)[0]
-    probability = model.predict_proba(features)[0][1]
+    prediction = model.predict(features.values)[0]        # FIXED
+    probability = model.predict_proba(features.values)[0][1]  # FIXED
 
     if prediction == 1:
         st.success(f"🎉 The passenger **Survived** 🟢 (Probability: {probability:.2f})")
