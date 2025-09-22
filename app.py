@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import joblib
 import os
 from sklearn.model_selection import train_test_split
@@ -21,6 +20,32 @@ st.set_page_config(
 )
 
 # ----------------------------
+# Custom Background (CSS)
+# ----------------------------
+page_bg = """
+<style>
+.stApp {
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Blue gradient */
+    color: white;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #FFD700 !important; /* Gold headings */
+}
+.stButton>button {
+    background: linear-gradient(90deg, #FF512F, #DD2476);
+    color: white;
+    border-radius: 12px;
+    font-size: 18px;
+    padding: 10px 20px;
+}
+.stSidebar {
+    background: linear-gradient(180deg, #6a11cb, #2575fc);
+}
+</style>
+"""
+st.markdown(page_bg, unsafe_allow_html=True)
+
+# ----------------------------
 # Global Model Path
 # ----------------------------
 MODEL_PATH = "titanic_model.pkl"
@@ -38,12 +63,9 @@ def build_pipeline():
             ("num", StandardScaler(), numeric)
         ]
     )
-
     model = RandomForestClassifier(n_estimators=100, random_state=42)
-
-    pipe = Pipeline(steps=[("preprocessor", preprocessor),
+    return Pipeline(steps=[("preprocessor", preprocessor),
                            ("classifier", model)])
-    return pipe
 
 # ----------------------------
 # Train and Save Model
@@ -82,11 +104,11 @@ def load_model(path=MODEL_PATH):
 # Streamlit UI
 # ----------------------------
 st.title("🚢 Titanic Survival Prediction ⚓")
-st.write("Enter passenger details to predict survival.")
+st.markdown("💡 *Enter passenger details below to check survival chances.*")
 
 # Sidebar for training
-st.sidebar.header("📂 Train Model with Titanic Dataset")
-uploaded_file = st.sidebar.file_uploader("Upload Titanic CSV", type=["csv"])
+st.sidebar.header("📂 Upload & Train Model")
+uploaded_file = st.sidebar.file_uploader("📄 Upload Titanic CSV", type=["csv"])
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
@@ -102,19 +124,19 @@ if model is None:
 # ----------------------------
 # User Inputs
 # ----------------------------
-pclass = st.selectbox("Passenger Class (Pclass)", [1, 2, 3])
-sex = st.selectbox("Sex", ["male", "female"])
-age = st.slider("Age", 0, 80, 25)
-sibsp = st.number_input("Siblings/Spouses Aboard (SibSp)", 0, 10, 0)
-parch = st.number_input("Parents/Children Aboard (Parch)", 0, 10, 0)
-fare = st.slider("Fare", 0.0, 500.0, 32.2)
-embarked = st.selectbox("Port of Embarkation", ["C", "Q", "S"])
+st.subheader("🧍 Passenger Information")
+pclass = st.selectbox("🎟️ Passenger Class (Pclass)", [1, 2, 3])
+sex = st.selectbox("🚻 Sex", ["male", "female"])
+age = st.slider("🎂 Age", 0, 80, 25)
+sibsp = st.number_input("👨‍👩‍👧‍👦 Siblings/Spouses Aboard (SibSp)", 0, 10, 0)
+parch = st.number_input("👶 Parents/Children Aboard (Parch)", 0, 10, 0)
+fare = st.slider("💵 Fare", 0.0, 500.0, 32.2)
+embarked = st.selectbox("🛳️ Port of Embarkation", ["C", "Q", "S"])
 
 # ----------------------------
 # Prediction
 # ----------------------------
-if st.button("Predict Survival 🧾"):
-    # Safe feature order
+if st.button("🔮 Predict Survival"):
     expected_features = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
     sample = pd.DataFrame([{
         "Pclass": pclass,
@@ -134,4 +156,3 @@ if st.button("Predict Survival 🧾"):
         st.success(f"🎉 Passenger Survived with probability {proba[1]:.2f}")
     else:
         st.error(f"☠️ Passenger Did NOT Survive with probability {proba[0]:.2f}")
-
