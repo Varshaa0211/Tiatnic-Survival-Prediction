@@ -77,7 +77,7 @@ features = pd.DataFrame([input_data])
 
 # Align with training columns (add missing, drop extra)
 for col in feature_columns:
-    if col not in features.columns:
+    if col not in features_columns:
         features[col] = 0
 features = features[feature_columns]
 
