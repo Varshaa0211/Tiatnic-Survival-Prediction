@@ -36,7 +36,9 @@ st.markdown(page_bg, unsafe_allow_html=True)
 # ----------------------------
 try:
     model = joblib.load("titanic_model.pkl")
-    feature_columns = joblib.load("titanic_columns.pkl")  # save during training
+    feature_columns = joblib.load("titanic_columns.pkl")
+    if not isinstance(feature_columns, list):  # ensure list
+        feature_columns = list(feature_columns)
 except:
     st.error("❌ Model or column file not found! Please ensure `titanic_model.pkl` and `titanic_columns.pkl` exist.")
     st.stop()
@@ -75,7 +77,7 @@ input_data = {
 
 features = pd.DataFrame([input_data])
 
-# Align with training columns (add missing, drop extra)
+# Align with training columns
 for col in feature_columns:
     if col not in features.columns:
         features[col] = 0
