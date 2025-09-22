@@ -88,7 +88,7 @@ if not os.path.exists(MODEL_PATH):
     st.success("✅ Model trained and saved!")
 
 # Load model + feature list
-model, feature_columns = joblib.load(MODEL_PATH)
+model, feature_columns = joblib.load(model, "titanic_model.pkl)
 
 # ----------------------------
 # Title
