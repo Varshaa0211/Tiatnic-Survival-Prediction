@@ -72,12 +72,15 @@ def train_and_save_model(df, save_path=MODEL_PATH):
     if not required.issubset(df.columns):
         raise ValueError(f"CSV must contain columns: {required}")
 
-    X = df[["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]]
-    y = df["Survived"]
+    # Drop rows with missing target
+    df = df.dropna(subset=["Survived"])
 
-    # ✅ Correct assignment order
+    X = df[["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]]
+    y = df["Survived"].astype(int)   # force Survived to int (0/1)
+
+    # ✅ Correct train-test split
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+        X, y, test_size=0.2, random_state=42, stratify=y
     )
 
     pipe = build_pipeline()
